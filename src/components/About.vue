@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <PageTitle :str="pageTitle" :key="pageTitle"/>
+    <PageTitle :str="pageTitle" :key="pageTitle" />
     <div class="data-content about-inner">
       <div class="about-info">
         <div v-for="(value, index) in omdb" :key="index" class="about-element">
@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="about-poster">
-        <img class="poster-img" :src="poster" :alt="omdb.title">
+        <img class="poster-img" :src="poster" :alt="omdb.title" />
       </div>
     </div>
   </div>
@@ -25,7 +25,7 @@ import Vue from "vue";
 import axios from "axios";
 import PageTitle from "./PageTitle.vue";
 const api = axios.create({
-  baseURL: "http://www.omdbapi.com/"
+  baseURL: "http://www.omdbapi.com/",
 });
 
 export default {
@@ -34,17 +34,17 @@ export default {
       omdb: {},
       poster: "",
       ratings: [],
-      pageTitle: "About"
+      pageTitle: "About",
     };
   },
 
   components: {
-    PageTitle
+    PageTitle,
   },
 
   methods: {
     getPoster() {
-      api.get(`?apikey=88e836ce&i=+tt0903747`).then(response => {
+      api.get(`?apikey=88e836ce&i=+tt0903747`).then((response) => {
         this.omdb = { ...response.data };
         this.poster = this.omdb.Poster;
         this.ratings = { ...this.omdb.Ratings };
@@ -53,23 +53,29 @@ export default {
       });
     },
 
+    // ratingsStr() {
+    //   let arr = [],
+    //     str;
+    //   const keys = Object.keys(this.ratings);
+    //   keys.forEach(element => {
+    //     arr.push(
+    //       `${this.ratings[element].Value} by ${this.ratings[element].Source}`
+    //     );
+    //   });
+    //   str = arr.join(", ");
+    //   return str;
+    // },
+
     ratingsStr() {
-      let arr = [],
-        str;
-      const keys = Object.keys(this.ratings);
-      keys.forEach(element => {
-        arr.push(
-          `${this.ratings[element].Value} by ${this.ratings[element].Source}`
-        );
-      });
-      str = arr.join(", ");
-      return str;
-    }
+      return Object.values(this.ratings)
+        .map((el) => `${el.Value} by ${el.Source}`)
+        .join(", ");
+    },
   },
 
   created() {
     this.getPoster();
-  }
+  },
 };
 </script>
 
